@@ -37,8 +37,21 @@ class SnakeScene extends Phaser.Scene {
         // obstacle
         gfx.clear().fillStyle(0x4444aa).fillRect(0,0,GRID,GRID);
         gfx.generateTexture('obstacle',GRID,GRID);
-        // powerup
-        gfx.clear().fillStyle(0xffd700).fillStar(GRID/2,GRID/2,5,GRID/2,GRID/4);
+        // powerup - draw a star manually
+        gfx.clear();
+        const star = new Phaser.Geom.Polygon([
+            GRID/2, 0,
+            GRID*0.65, GRID*0.35,
+            GRID, GRID*0.35,
+            GRID*0.72, GRID*0.58,
+            GRID*0.82, GRID,
+            GRID/2, GRID*0.75,
+            GRID*0.18, GRID,
+            GRID*0.28, GRID*0.58,
+            0, GRID*0.35,
+            GRID*0.35, GRID*0.35
+        ]);
+        gfx.fillStyle(0xffd700).fillPoints(star.points);
         gfx.generateTexture('powerup',GRID,GRID);
     }
 
@@ -143,7 +156,7 @@ class SnakeScene extends Phaser.Scene {
         } while(this.isOccupied(pos.x,pos.y));
         const ox = (this.scale.width - BOARD_W*GRID)/2;
         const oy = (this.scale.height - BOARD_H*GRID)/2;
-        const img = this.add.star(ox + pos.x*GRID + GRID/2, oy + pos.y*GRID + GRID/2, 5, GRID/3, GRID/2-2, 0xffd700);
+        const img = this.add.image(ox + pos.x*GRID + GRID/2, oy + pos.y*GRID + GRID/2, 'powerup');
         this.powerUps.push({x:pos.x,y:pos.y,image:img});
     }
 
@@ -167,7 +180,7 @@ class SnakeScene extends Phaser.Scene {
                 o.image.x = ox + nx*GRID + GRID/2;
                 o.image.y = oy + ny*GRID + GRID/2;
             }
-        });
+       });
     }
 
     update(t,dt) {
