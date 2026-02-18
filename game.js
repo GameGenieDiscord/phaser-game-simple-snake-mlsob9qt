@@ -74,6 +74,7 @@ class SnakeScene extends Phaser.Scene {
         this.snake.forEach(s=>s.image.destroy());
         this.obstacles.forEach(o=>o.image.destroy());
         this.powerUps.forEach(p=>p.image.destroy());
+        if(this.foodImage) this.foodImage.destroy();
         this.snake = [];
         this.obstacles = [];
         this.powerUps = [];
@@ -171,15 +172,15 @@ class SnakeScene extends Phaser.Scene {
 
     update(t,dt) {
         if(this.gameOver) {
-            if(this.cursors.space.isDown) this.resetGame();
+            if(this.cursors.space && this.cursors.space.isDown) this.resetGame();
             return;
         }
 
         // input buffering
-        if(this.cursors.left.isDown || this.wasd.A.isDown) this.nextDir={x:-1,y:0};
-        if(this.cursors.right.isDown || this.wasd.D.isDown) this.nextDir={x:1,y:0};
-        if(this.cursors.up.isDown || this.wasd.W.isDown) this.nextDir={x:0,y:-1};
-        if(this.cursors.down.isDown || this.wasd.S.isDown) this.nextDir={x:0,y:1};
+        if(this.cursors.left && this.cursors.left.isDown || this.wasd.A && this.wasd.A.isDown) this.nextDir={x:-1,y:0};
+        if(this.cursors.right && this.cursors.right.isDown || this.wasd.D && this.wasd.D.isDown) this.nextDir={x:1,y:0};
+        if(this.cursors.up && this.cursors.up.isDown || this.wasd.W && this.wasd.W.isDown) this.nextDir={x:0,y:-1};
+        if(this.cursors.down && this.cursors.down.isDown || this.wasd.S && this.wasd.S.isDown) this.nextDir={x:0,y:1};
 
         // prevent reversing into self
         if(this.nextDir.x !== -this.dir.x || this.nextDir.y !== -this.dir.y) {
